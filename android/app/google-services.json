@@ -1,0 +1,29 @@
+{
+  "project_info": {
+    "project_number": "864025328062",
+    "project_id": "nector-11aa2",
+    "storage_bucket": "nector-11aa2.firebasestorage.app"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:864025328062:android:682db9a4ffc90bad0061ef",
+        "android_client_info": {
+          "package_name": "com.nector"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyBJp-okiIQU99yQtUiaM4fHI2V6BVHMb7E"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

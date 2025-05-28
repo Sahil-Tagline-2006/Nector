@@ -2,6 +2,10 @@ import UIKit
 import React
 import React_RCTAppDelegate
 import ReactAppDependencyProvider
+import FirebaseCore
+// new code
+import FBSDKCoreKit 
+// new code
 
 @main
 class AppDelegate: UIResponder, UIApplicationDelegate {
@@ -14,6 +18,13 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
     _ application: UIApplication,
     didFinishLaunchingWithOptions launchOptions: [UIApplication.LaunchOptionsKey: Any]? = nil
   ) -> Bool {
+    // new code
+    ApplicationDelegate.shared.application( // <-- Facebook SDK init
+      application,
+      didFinishLaunchingWithOptions: launchOptions
+    )
+    // new code
+
     let delegate = ReactNativeDelegate()
     let factory = RCTReactNativeFactory(delegate: delegate)
     delegate.dependencyProvider = RCTAppDependencyProvider()
@@ -28,9 +39,27 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
       in: window,
       launchOptions: launchOptions
     )
-
+    showSplashScreen()
+    FirebaseApp.configure()
     return true
   }
+  private func showSplashScreen() {
+          DispatchQueue.main.async {
+              if let splashClass = NSClassFromString("SplashView") as? NSObject.Type,
+                 let splashInstance = splashClass.perform(NSSelectorFromString("sharedInstance"))?.takeUnretainedValue() as? NSObject {
+                  splashInstance.perform(NSSelectorFromString("showSplash"))
+              }
+          }
+      }
+      // new code
+        func application(
+          _ app: UIApplication,
+          open url: URL,
+          options: [UIApplication.OpenURLOptionsKey : Any] = [:]
+        ) -> Bool {
+          return ApplicationDelegate.shared.application(app, open: url, options: options)
+        }
+      // new code
 }
 
 class ReactNativeDelegate: RCTDefaultReactNativeFactoryDelegate {
