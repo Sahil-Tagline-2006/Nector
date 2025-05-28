@@ -92,8 +92,7 @@ const Favourite = () => {
       <CustomHorizontalLine marginVertical={0} />
 
       {/* main Content */}
-      <View
-        style={{flex: 1, paddingHorizontal: SW(20), paddingVertical: SH(20)}}>
+      <View style={styles.FavouriteListMainView}>
         {Favourites.length === 0 ? (
           <CustomEmpty />
         ) : (
@@ -169,5 +168,11 @@ const styles = StyleSheet.create({
   },
   productIconShow: {
     transform: [{rotate: '-90deg'}],
+  },
+
+  FavouriteListMainView: {
+    flex: 1,
+    paddingHorizontal: SW(20),
+    paddingVertical: SH(20),
   },
 });

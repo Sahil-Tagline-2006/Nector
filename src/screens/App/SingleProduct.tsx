@@ -49,15 +49,9 @@ const SingleProduct = () => {
 
   const SetFavouriteData = async () => {
     if (!isFavorite) {
-      const response = await Store_User_Favorites(
-        singleProduct,
-        user.details.uid,
-      );
+      await Store_User_Favorites(singleProduct, user.details.uid);
     } else {
-      const response = await Delete_User_Favorites(
-        singleProduct,
-        user.details.uid,
-      );
+      await Delete_User_Favorites(singleProduct, user.details.uid);
     }
 
     const favourite = await Get_User_Favorites(user.details.uid);
@@ -124,10 +118,7 @@ const SingleProduct = () => {
         AddToCart(false, action);
       } else {
         setInCart(false);
-        const response = await Delete_User_Cart(
-          singleProduct,
-          user.details.uid,
-        );
+        await Delete_User_Cart(singleProduct, user.details.uid);
         DeleteProductCart(singleProduct?.id);
         setQuantity(0);
       }
@@ -137,7 +128,7 @@ const SingleProduct = () => {
   const AddToCart = async (isGoBack = true, action = 'PLUS') => {
     if (isGoBack) setLoading(true);
     setInCart(true);
-    const response = await Store_User_Cart(
+    await Store_User_Cart(
       {
         ...singleProduct,
         quantity: action === 'PLUS' ? quantity + 1 : quantity - 1,
@@ -273,7 +264,7 @@ const SingleProduct = () => {
               style={{marginRight: SW(-10)}}
             />
           </TouchableOpacity>
-          {/* Header Text */}
+
           {/* last icons */}
           <TouchableOpacity style={styles.headerLastIconsStyles}>
             <Image

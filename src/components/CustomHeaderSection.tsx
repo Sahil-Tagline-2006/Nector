@@ -28,13 +28,15 @@ const CustomHeaderSection = (props: any) => {
     <View style={styles.container}>
       {/* first icons */}
       <TouchableOpacity
-        disabled={firstIconShow?false:true}
+        disabled={firstIconShow ? false : true}
         style={[styles.headerfirstIconsStyles, {alignItems: firstalignItems}]}
         onPress={handleFirstIconPress}>
         {firstIconShow && <Icon name={firstIcon} size={FS(25)} />}
       </TouchableOpacity>
+
       {/* Header Text */}
       <Text style={styles.middleText}>{middleText}</Text>
+
       {/* last icons */}
       <TouchableOpacity
         onPress={lastIconAction}

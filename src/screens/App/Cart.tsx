@@ -201,8 +201,7 @@ const Cart = () => {
       <CustomHorizontalLine marginVertical={0} />
 
       {/* main Content */}
-      <View
-        style={{flex: 1, paddingHorizontal: SW(20), paddingVertical: SH(20)}}>
+      <View style={styles.CartListMainView}>
         {Cart.length === 0 ? (
           <CustomEmpty />
         ) : (
@@ -267,10 +266,7 @@ const Cart = () => {
           </DummyCheckOutContainer>
           <CustomHorizontalLine marginVertical={0} />
           <DummyCheckOutContainer title="Pament">
-            <Image
-              source={images.CARD}
-              style={{height: SH(25), width: SW(25)}}
-            />
+            <Image source={images.CARD} style={styles.BottomPaymentImage} />
           </DummyCheckOutContainer>
           <CustomHorizontalLine marginVertical={0} />
           <DummyCheckOutContainer title="Promo Code">
@@ -493,5 +489,15 @@ const styles = StyleSheet.create({
     fontFamily: fontStyles.GIL_SEMIBOLD,
     fontSize: FS(16),
     color: colors.BLACK,
+  },
+
+  CartListMainView: {
+    flex: 1,
+    paddingHorizontal: SW(20),
+    paddingVertical: SH(20),
+  },
+  BottomPaymentImage: {
+    height: SH(25),
+    width: SW(25),
   },
 });

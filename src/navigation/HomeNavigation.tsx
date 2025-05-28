@@ -27,53 +27,55 @@ const HomeNavigation = () => {
       setTotalBedgeValue(totalBedgeValue);
     }, [Cart]),
   );
-  const Bedge=useMemo(()=>{
-    return totalBedgeValue >=1?"":undefined
-  },[Cart,totalBedgeValue])
 
+  const Bedge = useMemo(() => {
+    return totalBedgeValue >= 1 ? '' : undefined;
+  }, [Cart, totalBedgeValue]);
+
+  const ScreenOption = ({route}: any) => ({
+    headerShown: false,
+
+    tabBarIcon: ({focused, size}) => {
+      let iconName;
+      iconName =
+        route.name === 'Shop'
+          ? images.SHOP
+          : route.name === 'Explore'
+          ? images.EXPOLRE
+          : route.name === 'Cart'
+          ? images.CART
+          : route.name === 'Favourite'
+          ? images.FAVOURITE
+          : images.ACCOUNT;
+
+      return (
+        <Image
+          source={iconName}
+          resizeMode="contain"
+          style={{
+            width: size,
+            height: size,
+            tintColor: focused ? colors.THMEM_COLOR : colors.BLACK,
+          }}
+        />
+      );
+    },
+    tabBarActiveTintColor: colors.THMEM_COLOR,
+    tabBarInactiveTintColor: colors.BLACK,
+    tabBarLabelStyle: {
+      fontSize: FS(12),
+    },
+  });
+  
   return (
-    <BottomTab.Navigator
-      screenOptions={({route}) => ({
-        headerShown: false,
-
-        tabBarIcon: ({focused, size}) => {
-          let iconName;
-          iconName =
-            route.name === 'Shop'
-              ? images.SHOP
-              : route.name === 'Explore'
-              ? images.EXPOLRE
-              : route.name === 'Cart'
-              ? images.CART
-              : route.name === 'Favourite'
-              ? images.FAVOURITE
-              : images.ACCOUNT;
-
-          return (
-            <Image
-              source={iconName}
-              resizeMode="contain"
-              style={{
-                width: size,
-                height: size,
-                tintColor: focused ? colors.THMEM_COLOR : colors.BLACK,
-              }}
-            />
-          );
-        },
-        tabBarActiveTintColor: colors.THMEM_COLOR,
-        tabBarInactiveTintColor: colors.BLACK,
-        tabBarLabelStyle: {
-          fontSize: FS(12),
-        },
-      })}>
+    <BottomTab.Navigator screenOptions={ScreenOption}>
       <BottomTab.Screen name="Shop" component={ShopNavigation} />
       <BottomTab.Screen name="Explore" component={ExoploreNavigation} />
       <BottomTab.Screen
         name="Cart"
         component={CartScreen}
         options={{
-          tabBarBadge:Bedge,         
+          tabBarBadge: Bedge,
         }}
       />
       <BottomTab.Screen name="Favourite" component={Favourite} />
@@ -83,4 +85,3 @@ const HomeNavigation = () => {
 };
 
 export default HomeNavigation;
-

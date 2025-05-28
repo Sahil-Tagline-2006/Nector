@@ -23,19 +23,18 @@ import {
 import useZustandStore from '../../zustand/useZustandStore';
 import ShowToast from '../../utils/DisplayToast';
 import {ALERT_TYPE} from 'react-native-alert-notification';
+import {DRIVE, IOS_CLIENT_ID, WEB_CLIENT_ID} from "@env";
 import {
-  AccessToken,
-  LoginManager,
+  AccessToken,  
+  LoginManager, 
   AuthenticationToken,
 } from 'react-native-fbsdk-next';
 import {sha256} from 'react-native-sha256';
 
 GoogleSignin.configure({
-  webClientId:
-    '864025328062-3rd69mm81f4gpseus56k3jo2fboeeanf.apps.googleusercontent.com',
-  iosClientId:
-    '864025328062-0h1e4909da7s75194jg37ucn03806l9d.apps.googleusercontent.com',
-  scopes: ['https://www.googleapis.com/auth/drive'],
+  webClientId:WEB_CLIENT_ID,
+  iosClientId:IOS_CLIENT_ID,
+  scopes: [DRIVE],
   offlineAccess: true,
   forceCodeForRefreshToken: true,
   profileImageSize: 120,

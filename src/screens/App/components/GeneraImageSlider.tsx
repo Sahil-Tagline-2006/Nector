@@ -1,7 +1,7 @@
 import {Dimensions, Image, StyleSheet, View} from 'react-native';
 import React, {useState} from 'react';
 import Carousel from 'react-native-reanimated-carousel';
-import { SH} from '../../../../Scale';
+import {SH} from '../../../../Scale';
 import {colors, images} from '../../../utils/common/styles';
 import Animated, {
   useSharedValue,
@@ -17,6 +17,24 @@ const imagesList = [
 const GeneraImageSlider = () => {
   const scrollOffsetValue = useSharedValue<number>(0);
   const [currentIndex, setCurrentIndex] = useState(0);
+
+  const AnimatedDot = () => {
+    return imagesList.map((item, index) => {
+      const isActive = index === currentIndex;
+      const animatedDotStyle = useAnimatedStyle(() => {
+        return {
+          width: withTiming(isActive ? 20 : 8, {duration: 500}),
+          backgroundColor: isActive ? colors.THMEM_COLOR : colors.GRAY,
+        };
+      }, [currentIndex]);
+      return (
+        <Animated.View
+          key={item.id}
+          style={[styles.dotstyle, animatedDotStyle]}
+        />
+      );
+    });
+  };
   return (
     <View style={styles.mainContainer}>
       <Carousel
@@ -33,28 +51,18 @@ const GeneraImageSlider = () => {
         renderItem={({item}) => {
           return (
             <View style={styles.carouselItem}>
-              <Image source={item.uri} resizeMode="stretch" style={styles.imageStyle} />
+              <Image
+                source={item.uri}
+                resizeMode="stretch"
+                style={styles.imageStyle}
+              />
             </View>
           );
         }}
       />
 
       <View style={styles.dotcontainer}>
-        {imagesList.map((item, index) => {
-          const isActive = index === currentIndex;
-          const animatedDotStyle = useAnimatedStyle(() => {
-            return {
-              width: withTiming(isActive ? 20 : 8, {duration: 500}),
-              backgroundColor: isActive ? colors.THMEM_COLOR : colors.GRAY,
-            };
-          }, [currentIndex]);
-          return (
-            <Animated.View
-              key={item.id}
-              style={[styles.dotstyle, animatedDotStyle]}
-            />
-          );
-        })}
+        <AnimatedDot />
       </View>
     </View>
   );

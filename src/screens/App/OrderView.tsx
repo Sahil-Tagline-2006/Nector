@@ -10,21 +10,23 @@ import {RenderCartItem} from './Cart';
 import {useRoute} from '@react-navigation/native';
 
 const OrderView = () => {
-  const {products}:any = useRoute().params;
-  
-  const CustomRenderOrders=({item}:any)=>{
-    return <RenderCartItem isActionDisplay={false} item={item} disabled={true}/>
-  }
-  
+  const {products}: any = useRoute().params;
+
+  const CustomRenderOrders = ({item}: any) => {
+    return (
+      <RenderCartItem isActionDisplay={false} item={item} disabled={true} />
+    );
+  };
+
   return (
     <SafeAreaView edges={['top']} style={styles.mainContainer}>
       <View style={styles.headerView}>
         <CustomHeaderSection firstIconShow={true} middleText="My Order" />
       </View>
-      <CustomHorizontalLine marginVertical={0}/>
+      <CustomHorizontalLine marginVertical={0} />
 
       {/* main Content */}
-      <View style={{flex: 1, paddingHorizontal: SW(20),paddingVertical:SH(20)}}>
+      <View style={styles.OrderListMainView}>
         <FlatList
           ListEmptyComponent={CustomEmpty}
           showsVerticalScrollIndicator={false}
@@ -48,5 +50,11 @@ const styles = StyleSheet.create({
   headerView: {
     paddingHorizontal: SW(20),
     paddingVertical: SW(10),
+  },
+
+  OrderListMainView: {
+    flex: 1,
+    paddingHorizontal: SW(20),
+    paddingVertical: SH(20),
   },
 });
