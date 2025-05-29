@@ -28,7 +28,7 @@ import useZustandStore from '../../zustand/useZustandStore';
 
 const Login = () => {
   const navigation = useNavigation();
-  const {setUserLogin} = useZustandStore();
+  const {setUserLogin, user} = useZustandStore();
 
   const [passwordSecure, setPasswordSecure] = useState({
     secure: true,
@@ -70,6 +70,8 @@ const Login = () => {
           ...values,
           uid: userCredential.user.uid,
           username: userData._data.username,
+          birthDate: user.details.birthDate,
+          photo: user.details.photo,
         });
         ShowToast(ALERT_TYPE.SUCCESS, 'Success', 'Congrats! Login Succesful!!');
         resetForm();

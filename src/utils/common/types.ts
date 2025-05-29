@@ -3,6 +3,8 @@ type userDetailType = {
   email: string;
   password: string;
   uid: string;
+  photo?:string;
+  birthDate?:string;
 };
 
 type user = {

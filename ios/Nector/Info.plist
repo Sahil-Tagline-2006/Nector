@@ -114,5 +114,13 @@
 			<string>fbauth2</string>
 			<string>fbshareextension</string>
 		</array>
+
+		<!-- Nectoe Permissions -->
+		<key>NSPhotoLibraryUsageDescription</key>
+		<string>$(PRODUCT_NAME) needs access to your Gallary.</string>
+		<key>NSCameraUsageDescription</key>
+		<string>$(PRODUCT_NAME) needs access to your Camera.</string>
+		<key>NSMicrophoneUsageDescription</key>
+		<string>$(PRODUCT_NAME) needs access to your Microphone.</string>
 	</dict>
 </plist>

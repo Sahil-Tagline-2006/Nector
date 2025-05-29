@@ -17,7 +17,7 @@ import CustomFeilds from '../../components/Inputs/CustomFeilds';
 import CustomButton from '../../components/CustomButton';
 import CustomAskForLogin from '../../components/CustomAskForLogin';
 import {useNavigation} from '@react-navigation/native';
-import {Formik, useFormik} from 'formik';
+import {useFormik} from 'formik';
 import {SignupValidationSchema} from '../../utils/ValidationSchema';
 import {
   Create_User_Email_Password,
@@ -29,11 +29,12 @@ import useZustandStore from '../../zustand/useZustandStore';
 
 const SignUp = () => {
   const navigation = useNavigation();
-  const {setUserLogin} = useZustandStore();
+  const {setUserLogin, user} = useZustandStore();
   const [passwordSecure, setPasswordSecure] = useState({
     secure: true,
     iscloseeye: true,
   });
+  console.log(user);
 
   const PasswordToggle = () => {
     setPasswordSecure(prev => ({
@@ -61,7 +62,12 @@ const SignUp = () => {
 
         if (userCredential) {
           await Store_User_FireStore(values, userCredential.user.uid);
-          setUserLogin({...values, uid: userCredential.user.uid});
+          setUserLogin({
+            ...values,
+            uid: userCredential.user.uid,
+            birthDate: user.details.birthDate,
+            photo: user.details.photo,
+          });
 
           ShowToast(
             ALERT_TYPE.SUCCESS,

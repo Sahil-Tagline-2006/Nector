@@ -18,6 +18,8 @@ const initialUserData: user = {
     email: '',
     password: '',
     uid: '',
+    birthDate: '',
+    photo: 'https://robohash.org/mail@ashallendesign.co.uk',
   },
 };
 const initialProductList = products;
@@ -28,14 +30,16 @@ const useZustandStore = create<CreateStoreTypes>()(
       const setLoading = (flag: boolean) => {
         set({
           ...get(),
-          isLoading: flag
+          isLoading: flag,
         });
       };
       const setUserLogin = (data: userDetailType) => {
         const newState = {
           user: {
             isLogin: true,
-            details: data,
+            details: {
+              ...data,
+            },
           },
         };
         set(newState);
@@ -49,6 +53,8 @@ const useZustandStore = create<CreateStoreTypes>()(
               email: '',
               password: '',
               uid: '',
+              birthDate: '',
+              photo: 'https://robohash.org/mail@ashallendesign.co.uk',
             },
           },
         };

@@ -1,4 +1,5 @@
 import {
+  Alert,
   Image,
   ScrollView,
   StyleSheet,
@@ -6,7 +7,7 @@ import {
   TouchableOpacity,
   View,
 } from 'react-native';
-import React, {useCallback} from 'react';
+import React, {useCallback, useState} from 'react';
 import {SafeAreaView} from 'react-native-safe-area-context';
 import {colors, fontStyles, images} from '../../utils/common/styles';
 import {FS, SH, SW} from '../../../Scale';
@@ -17,21 +18,15 @@ import CustomHorizontalLine from '../../components/CustomHorizontalLine';
 import CustomButton from '../../components/CustomButton';
 import {useFocusEffect, useNavigation} from '@react-navigation/native';
 import {Get_User_Orders} from '../../firebase/Firebase';
-
-function formatTime(timeStr) {
-  let [hour, minute] = timeStr.split(':').map(Number);
-
-  const am_pm = hour >= 12 ? 'PM' : 'AM';
-  hour = hour % 12 || 12;
-  let formatted_Hour = hour.toString().padStart(2, '0');
-  let formatted_Minute = minute.toString().padStart(2, '0');
-
-  return `${formatted_Hour}:${formatted_Minute} ${am_pm}`;
-}
+import {launchImageLibrary} from 'react-native-image-picker';
+import DatePicker from 'react-native-date-picker';
 
 const Account = () => {
   const navigation = useNavigation();
-  const {user, Orders, setUserOrders, setUserLoginOut} = useZustandStore();
+  const {user, Orders, setUserOrders, setUserLoginOut, setUserLogin} =
+    useZustandStore();
+  const [profilePhoto, setProfilePhoto] = useState(user.details.photo);
+  const [openDateSelect, setOpenDateSelect] = useState(false);
 
   useFocusEffect(
     useCallback(() => {
@@ -45,7 +40,20 @@ const Account = () => {
   };
 
   const Logout = () => {
-    setUserLoginOut();
+    Alert.alert('Confirmation', 'Are you sure to logout?', [
+      {
+        text: 'Cancel',
+        onPress: () => {},
+        style: 'cancel',
+      },
+      {
+        text: 'Logout',
+        onPress: () => {
+          setUserLoginOut();
+        },
+        style: 'destructive',
+      },
+    ]);
   };
 
   const GotoOrderPage = () => {
@@ -68,13 +76,41 @@ const Account = () => {
     );
   };
 
+  const TakeProfilePhoto = async () => {
+    try {
+      const result = await launchImageLibrary({
+        mediaType: 'photo',
+      });
+
+      if (result.assets) {
+        const newUserDetails = {
+          ...user.details,
+          photo: result?.assets[0]?.uri,
+        };
+        setUserLogin(newUserDetails);
+        // setProfilePhoto(result?.assets[0]?.uri);
+      }
+    } catch (error) {
+      console.log(error);
+    }
+  };
+  const SelectBirthDate = () => {
+    setOpenDateSelect(true);
+  };
+  console.log(user);
   return (
     <SafeAreaView style={styles.safearea}>
       <ScrollView style={styles.safearea} showsVerticalScrollIndicator={false}>
         {/* user Detail View */}
         <View style={styles.mainDetailView}>
-          <Image source={images.USER} style={styles.imageStyle} />
-          <View>
+          <TouchableOpacity onPress={TakeProfilePhoto}>
+            <Image
+              source={{uri: user.details.photo}}
+              style={styles.imageStyle}
+              resizeMode="center"
+            />
+          </TouchableOpacity>
+          <View style={{gap: 5}}>
             <View style={styles.mainEditSection}>
               <Text style={styles.usernameStyle}>{user.details.username}</Text>
               <IconEvilIcons
@@ -85,6 +121,15 @@ const Account = () => {
               />
             </View>
             <Text style={styles.emailTextstyle}>{user.details.email}</Text>
+            {user.details.birthDate === '' ? (
+              <TouchableOpacity
+                onPress={SelectBirthDate}
+                style={styles.selectDateButton}>
+                <Text style={styles.selectDateText}>Select BirthDate</Text>
+              </TouchableOpacity>
+            ) : (
+              <Text style={styles.selectDateText}>{user.details.birthDate}</Text>
+            )}
           </View>
         </View>
 
@@ -134,6 +179,26 @@ const Account = () => {
           />
         </View>
       </ScrollView>
+
+      <DatePicker
+        modal
+        mode="date"
+        open={openDateSelect}
+        date={new Date()}
+        onConfirm={date => {
+          setOpenDateSelect(false);
+          const newUserDetails = {
+            ...user.details,
+            birthDate: `${date.getDate()}-${
+              date.getMonth() + 1
+            }-${date.getFullYear()}`,
+          };
+          setUserLogin(newUserDetails);
+        }}
+        onCancel={() => {
+          setOpenDateSelect(false);
+        }}
+      />
     </SafeAreaView>
   );
 };
@@ -148,6 +213,7 @@ const styles = StyleSheet.create({
   imageStyle: {
     height: SH(80),
     width: SH(80),
+    borderRadius: 50,
   },
   mainDetailView: {
     padding: FS(25),
@@ -167,7 +233,6 @@ const styles = StyleSheet.create({
   emailTextstyle: {
     fontFamily: fontStyles.GIL_REGULAR,
     fontSize: FS(16),
-    marginTop: SH(5),
   },
   editIcon: {
     marginTop: SH(-10),
@@ -187,11 +252,28 @@ const styles = StyleSheet.create({
   DummyImage: {
     height: SH(30),
     width: SH(30),
-    marginTop:SH(-3)
+    marginTop: SH(-3),
   },
   DummyText: {
     fontFamily: fontStyles.GIL_SEMIBOLD,
     fontSize: FS(18),
     flex: 1,
+  },
+
+  selectDateButton: {
+    backgroundColor: 'rgba(0,0,0,0.5)',
+    width: '60%',
+    alignItems: 'center',
+    padding: 5,
+    borderRadius: 20,
+  },
+  selectDateText: {
+    color: colors.WHITE,
+    fontFamily: fontStyles.GIL_BOLD,
+  },
+  DateText: {
+    color: colors.LIGHT_TEXT_2,
+    fontFamily: fontStyles.GIL_MEDIUM,
+    fontSize: FS(16),
   },
 });

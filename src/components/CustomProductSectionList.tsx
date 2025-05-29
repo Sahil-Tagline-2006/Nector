@@ -132,8 +132,9 @@ const styles = StyleSheet.create({
   },
   productImageStyle: {
     height: '50%',
-    width: '100%',
+    width: '80%',
     padding: FS(20),
+    alignSelf:"center"
   },
   productDetailsContainer: {
     height: '50%',
